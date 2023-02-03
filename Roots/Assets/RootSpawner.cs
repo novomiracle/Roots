@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RootSpawner : MonoBehaviour
-{
+{ public RootManagerScript RootManager;
 
-    public int rootsCount; //TODO:random
+    public int rootsCount; 
     public GameObject root;
     public GameObject spawnPivot;
     public float Horizontalrange = 5;
@@ -19,8 +19,13 @@ public class RootSpawner : MonoBehaviour
         for (int i = 0; i < rootsCount; ++i)
         {
             Vector3 pos = pivot + new Vector3(Random.Range(-1 * Horizontalrange, Horizontalrange), Random.Range(-1 * Verticalrange, 0), 0f);
-            spawnedRoots.Add(Instantiate(root, pos, Quaternion.identity));
+            var rootToAdd = Instantiate(root, pos, Quaternion.identity);
+
+
+            spawnedRoots.Add(rootToAdd);
+            RootManager.roots.Add(rootToAdd);
         }
+        RootManager.Draw();
     }
 
 
@@ -33,6 +38,7 @@ public class RootSpawner : MonoBehaviour
             if(item==null)
             {
                 spawnedRoots.Remove(item);
+                RootManager.roots.Remove(item); 
             }
         }
 
