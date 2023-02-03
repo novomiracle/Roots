@@ -5,25 +5,46 @@ using UnityEngine;
 public class RootSpawner : MonoBehaviour
 {
 
-    public int rootsCount = 1;
+    public int rootsCount; //TODO:random
     public GameObject root;
     public GameObject spawnPivot;
     public float Horizontalrange = 5;
     public float Verticalrange = 5;
-    private List<GameObject> spawnedRoots = new List<GameObject>();
+    public List<GameObject> spawnedRoots = new List<GameObject>();
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         Vector3 pivot = spawnPivot.transform.position;
-        for(int i = 0 ; i < rootsCount; ++i) {
-            Vector3 pos = pivot + new Vector3(Random.Range( -1 * Horizontalrange, Horizontalrange), Random.Range(-1 * Verticalrange, 0), 0f);
-            Instantiate(root, pos, Quaternion.identity);
+        for (int i = 0; i < rootsCount; ++i)
+        {
+            Vector3 pos = pivot + new Vector3(Random.Range(-1 * Horizontalrange, Horizontalrange), Random.Range(-1 * Verticalrange, 0), 0f);
+            spawnedRoots.Add(Instantiate(root, pos, Quaternion.identity));
         }
     }
 
-    // Update is called once per frame
-    void Update() {
-        
-    }
 
+
+    // Update is called once per frame
+    void Update()
+    {
+        foreach (var item in spawnedRoots)
+        {
+            if(item==null)
+            {
+                spawnedRoots.Remove(item);
+            }
+        }
+
+        if (spawnedRoots.Count < 1)
+        {
+            //fly
+            Debug.Log("log");
+            spawnPivot.transform.position += Vector3.up * 0.6f * Time.deltaTime;
+            //yield return new WaitForSeconds(0.01f);
+            // spawnPivot.transform.position = new Vector2(spawnPivot.transform.position.x, spawnPivot.transform.position.y + 1);
+            //spawnPivot.transform.position= nespawnPivot.transform.position.x, (int)spawnPivot.transform.position.y + 1;
+        }
+
+    }
 }
